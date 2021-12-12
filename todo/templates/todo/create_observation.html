@@ -1,0 +1,29 @@
+<!-- Name: Nichols Hennigar
+Class: CSCI E-33a
+Assigment: Final Project -->
+
+{% extends "todo/layout.html" %}
+
+{% block body %}
+    <h5>{{ title }}</h5>
+    <hr>
+    <!-- Display error message if there is one -->
+    <h5 style="color: red;">
+        {% if message %}
+            {{ message }}
+        {% endif %}
+    </h5>
+    <!-- Form for creating a new listing -->
+    <form action="{% url 'create_observation' %}" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <hr>
+        <div>
+            <input class="btn btn-primary" type="submit", value="Submit">
+            <a href="{% url 'observations' %}">
+                <input class="btn btn-outline-primary" type="button" value="Cancel">
+            </a>
+        </div>
+    </form>
+
+{% endblock %}

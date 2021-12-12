@@ -1,0 +1,41 @@
+<!-- Name: Nichols Hennigar
+Class: CSCI E-33a
+Assigment: Final Project -->
+
+{% extends "todo/layout.html" %}
+
+{% block body %}
+    <h5>{{ title }}</h5>
+    <hr>
+    <div id="observation-view" class="list-view">
+        {% for observation in observation_list %}
+            <div class="card mb-3">
+                <a href="{% url 'observation' observation.id %}">
+                    <div class="card-header">
+                        <strong>{{ observation.component }}: {{ observation.status }}</strong>
+                    </div>
+                    <div class="row no-gutters">
+                        <div class="card-body">
+                            <ul>
+                                <li class="card-text"><strong>ID:</strong> {{ observation.id }}</li>
+                                <li class="card-text"><strong>Type:</strong> {{ observation.type }}</li>
+                                <li class="card-text"><strong>Component:</strong> {{ observation.component }}</li>
+                                <li class="card-text"><strong>Status</strong> {{ observation.status }}</li>
+                                <li class="card-text"><strong>Procedure:</strong> {{ observation.procedure }}</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        {% if observation.updated_by %}
+                            <small class="text-muted">Last updated by {{ observation.updated_by }} at {{ observation.updated_at }}</small>
+                        {% else %}
+                            <small class="text-muted">Last updated on {{ observation.updated_at }}</small>
+                        {% endif %}
+                    </div>
+                </a>
+            </div>
+        {% empty %}
+            No observations.
+        {% endfor %}
+</div>
+{% endblock %}

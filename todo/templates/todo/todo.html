@@ -1,0 +1,69 @@
+<!-- Name: Nichols Hennigar
+Class: CSCI E-33a
+Assigment: Final Project -->
+
+{% extends "todo/layout.html" %}
+{% load static %}
+{% block body %}
+
+    <h5>{{ title }}</h5>
+    <hr>
+
+    {% if error_message %}
+        <div id="error_message">{{ error_message }}</div>
+    {% endif %}
+
+    <div id="todo-div">
+        <ul>
+            <li><b>ID: </b>{{ todo.id }}</li>
+            <li><b>Version: </b>{{ todo.version }}</li>
+            <li><b>Type </b>{{ todo.type }}</li>
+            <li><b>Comment: </b>{{ todo.comment }}</li>
+            <li><b>Title: </b>{{ todo.title }}</li>
+            <li><b>Observation: </b>{{ todo.observation }}</li>
+            <li><b>Peace: </b>{{ todo.peace }}</li>
+            <li><b>Rescue: </b>{{ todo.rescue }}</li>
+            {% if todo.created_at != todo.updated_at %}
+                <li><b>Last updated at:</b> {{ todo.updated_at }}</li>
+            {% endif %}
+        </ul>
+    </div>
+
+    {% if user.is_authenticated %}
+        <div id="todo-button-div">
+            <button id="todo-edit-button" class="btn btn-sm btn-outline-primary" type="button" data-id="{{ todo.id }}">Edit</button>
+            <button id="todo-delete-button" class="btn btn-sm btn-outline-primary" type="button" data-id="{{ todo.id }}">Delete</button>
+        </div>
+        <div id="todo-confirmation-div">
+            <p>Are you sure you would like to delete todo: <b>{{ todo.title }}</b>?</p>
+            <button id="todo-delete-confirmation-button" class="btn btn-sm btn-outline-primary" type="button" data-todo="{{ todo.id }}">Delete</button>
+            <a href="{% url 'todo' todo.id %}">
+                <input class="btn btn-sm btn-outline-primary" type="button" value="Cancel">
+            </a>
+        </div>
+        <div id="api-error"></div>
+        <div id="todo-edit-div">
+            <form action="{% url 'edit_todo' todo.id %}" method="put"></form>
+                {% csrf_token %}
+                {% for field in todo_form %}
+                    <div class="form-group">
+                        <label for="{{ field.id_for_label }}">{{ field.label_tag }}</label>
+                        {{ field }}
+                        {% if field.help_text %}
+                            <p>{{ field.help_text }}</p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+                <input id="todo-update-button" class="btn btn-primary" type="submit" value="Update" data-id="{{ todo.id }}">
+                <a href="{% url 'todo' todo.id %}">
+                    <input class="btn btn-outline-primary" type="button" value="Cancel">
+                </a>
+            </form>
+        </div>
+    {% endif %}
+
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'todo/todo.js' %}"></script>
+{% endblock %}

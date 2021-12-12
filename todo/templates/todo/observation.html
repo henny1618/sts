@@ -1,0 +1,68 @@
+<!-- Name: Nichols Hennigar
+Class: CSCI E-33a
+Assigment: Final Project -->
+
+{% extends "todo/layout.html" %}
+{% load static %}
+{% block body %}
+
+    <h5>{{ title }}</h5>
+    <hr>
+    
+    {% if error_message %}
+        <div id="error_message">{{ error_message }}</div>
+    {% endif %}
+
+    <div id="observation-div">
+        <ul>
+            <li><b>ID: </b>{{ observation.id }}</li>
+            <li><b>Version: </b>{{ observation.version }}</li>
+            <li><b>Type </b>{{ observation.type }}</li>
+            <li><b>Component: </b>{{ observation.component }}</li>
+            <li><b>Status: </b>{{ observation.status }}</li>
+            <li><b>Procedure: </b>{{ observation.procedure }}</li>
+            {% if observation.created_at != observation.updated_at %}
+                <li><b>Last updated at:</b> {{ observation.updated_at }}</li>
+            {% endif %}
+        </ul>
+    </div>
+
+    {% if user.is_authenticated %}
+        <div id="observation-button-div">
+            <button id="observation-edit-button" class="btn btn-sm btn-outline-primary" type="button" data-id="{{ observation.id }}">Edit</button>
+            <button id="observation-delete-button" class="btn btn-sm btn-outline-primary" type="button" data-id="{{ observation.id }}">Delete</button>
+        </div>
+        <div id="observation-confirmation-div">
+            <p>Are you sure you would like to delete observation: <b>{{ observation.component }}: {{ observation.status }}</b>?</p>
+            <p>It will also delete all associated todos.</p>
+            <button id="observation-delete-confirmation-button" class="btn btn-sm btn-outline-primary" type="button" data-todo="{{ observation.id }}">Delete</button>
+            <a href="{% url 'observation' observation.id %}">
+                <input class="btn btn-sm btn-outline-primary" type="button" value="Cancel">
+            </a>
+        </div>
+        <div id="api-error"></div>
+        <div id="observation-edit-div">
+            <form action="{% url 'edit_observation' observation.id %}" method="put"></form>
+                {% csrf_token %}
+                {% for field in observation_form %}
+                    <div class="form-group">
+                        <label for="{{ field.id_for_label }}">{{ field.label_tag }}</label>
+                        {{ field }}
+                        {% if field.help_text %}
+                            <p>{{ field.help_text }}</p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+                <input id="observation-update-button" class="btn btn-primary" type="submit" value="Update" data-id="{{ observation.id }}">
+                <a href="{% url 'observation' observation.id %}">
+                    <input class="btn btn-outline-primary" type="button" value="Cancel">
+                </a>
+            </form>
+        </div>
+    {% endif %}
+
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'todo/observation.js' %}"></script>
+{% endblock %}

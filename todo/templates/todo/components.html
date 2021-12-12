@@ -1,0 +1,17 @@
+<!-- Name: Nichols Hennigar
+Class: CSCI E-33a
+Assigment: Final Project -->
+
+{% extends "todo/layout.html" %}
+
+{% block body %}
+    <h5>{{ title }}</h5>
+    <hr>
+    <div id="components-view" class="list-view">
+        {% for component in component_list %}
+            <a href="{% url 'component' component.id %}"><li>{{ component }}</li></a>
+        {% empty %}
+            No components.
+        {% endfor %}
+</div>
+{% endblock %}

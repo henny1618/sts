@@ -1,0 +1,25 @@
+/* Name: Nichols Hennigar
+Class: CSCI E-33a
+Assigment: Final Project */
+
+body {
+    padding: 10px;
+}
+
+h5 {
+    padding-top: 10px;
+    padding-left: 10px
+}
+
+#components-view {
+    padding: 10px
+}
+
+.card > a {
+    text-decoration: none;
+    color: black;
+}
+
+#api-error {
+    color: red;
+}
